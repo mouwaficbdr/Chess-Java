@@ -32,6 +32,7 @@ public class Piece {
         preLigne = ligne;
     }
 
+    // ! Chargement de l'image à partir de fichier PNG
     // public BufferedImage getImage(String cheminImage) {
     //     BufferedImage image = null;
     //     try {
@@ -107,6 +108,39 @@ public class Piece {
 
     public int getY(int ligne) {
         return ligne * Echiquier.TAILLE_CARRE;
+    }
+
+    public int getCol(int x) {
+        return (x + Echiquier.MOITIE_TAILLE_CARRE) / Echiquier.TAILLE_CARRE;
+    }
+
+    public int getLigne(int y) {
+        return (y + Echiquier.MOITIE_TAILLE_CARRE) / Echiquier.TAILLE_CARRE;
+    }
+
+    public void mettreAJourPosition() {
+        x = getX(col);
+        y = getY(ligne);
+        preCol = getCol(x);
+        preLigne = getLigne(y);
+    }
+
+    public void retour() {
+        col = preCol;
+        ligne = preLigne;
+        x = getX(col);
+        y = getY(ligne);
+    }
+
+    public boolean peutBouger(int colCible, int ligneCible) {
+        return false;
+    }
+
+    public boolean estDansEchiquier(int colCible, int ligneCible) {
+        if (colCible >= 0 && colCible <= 7 && ligneCible >= 0 && ligneCible <= 7) {
+            return true;
+        }
+        return false;
     }
 
     public void dessiner(Graphics2D g2) {
