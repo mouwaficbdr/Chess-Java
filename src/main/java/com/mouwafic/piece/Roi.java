@@ -17,8 +17,12 @@ public class Roi extends Piece{
         
         if (estDansEchiquier(colCible, ligneCible)) {
             
-            if(Math.abs(colCible - preCol) + Math.abs(ligneCible - preLigne) == 1 || Math.abs(colCible - preCol) * Math.abs(ligneCible - preLigne)  == 1) {
-                return true;
+            if (Math.abs(colCible - preCol) + Math.abs(ligneCible - preLigne) == 1
+                    || Math.abs(colCible - preCol) * Math.abs(ligneCible - preLigne) == 1) {
+                
+                if (verifieCaseValide(colCible, ligneCible)) {
+                    return true;
+                }
             }
         }
         
