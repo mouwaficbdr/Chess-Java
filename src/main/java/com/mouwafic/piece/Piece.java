@@ -21,7 +21,7 @@ public class Piece {
     public int x, y;
     public int col, ligne, preCol, preLigne;
     public int couleur;
-    public Piece tombeSurPiece;
+    public Piece pieceSurDestination;
 
     public Piece(int couleur, int col, int ligne) {
         this.couleur = couleur;
@@ -120,6 +120,15 @@ public class Piece {
         return (y + Echiquier.MOITIE_TAILLE_CASE) / Echiquier.TAILLE_CASE;
     }
 
+    public int getIndex() {
+        for (int index = 0; index < PanneauDeJeu.simPieces.size(); index++) {
+            if (PanneauDeJeu.simPieces.get(index) == this) {
+                return index;
+            }
+        }
+        return 0;
+    }
+
     public void mettreAJourPosition() {
         x = getX(col);
         y = getY(ligne);
@@ -152,6 +161,23 @@ public class Piece {
             }
         }
         return null;
+    }
+
+    public boolean verifieCaseValide(int colCible, int ligneCible) {
+
+        pieceSurDestination = tombeSurPiece(colCible, ligneCible);
+
+        if (pieceSurDestination == null) {
+            return true;
+        } else {
+            if (pieceSurDestination.couleur != this.couleur) {
+                return true;
+            } else {
+                pieceSurDestination = null;
+            }
+        }
+
+        return false;
     }
 
     public void dessiner(Graphics2D g2) {
