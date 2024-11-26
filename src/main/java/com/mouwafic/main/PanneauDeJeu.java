@@ -47,8 +47,8 @@ public class PanneauDeJeu extends JPanel implements Runnable{
             if (pieceActive == null) {
 
                 for (Piece piece : simPieces) {
-                    if (piece.couleur == couleurActuelle && piece.col == (int) (souris.x / Echiquier.TAILLE_CARRE)
-                            && piece.ligne == (int) (souris.y / Echiquier.TAILLE_CARRE)) {
+                    if (piece.couleur == couleurActuelle && piece.col == (int) (souris.x / Echiquier.TAILLE_CASE)
+                            && piece.ligne == (int) (souris.y / Echiquier.TAILLE_CASE)) {
                         pieceActive = piece;
                     }
                 }
@@ -78,8 +78,8 @@ public class PanneauDeJeu extends JPanel implements Runnable{
         caseValide = false;
 
         //Si une pièce est maintenue, mettre à jour sa position
-        pieceActive.x = souris.x - Echiquier.MOITIE_TAILLE_CARRE; //On soustrait la taille de la moitié d'un carré pour que la piece active soit centrée sur la position de la souris
-        pieceActive.y = souris.y - Echiquier.MOITIE_TAILLE_CARRE;
+        pieceActive.x = souris.x - Echiquier.MOITIE_TAILLE_CASE; //On soustrait la taille de la moitié d'un carré pour que la piece active soit centrée sur la position de la souris
+        pieceActive.y = souris.y - Echiquier.MOITIE_TAILLE_CASE;
         pieceActive.col = pieceActive.getCol(pieceActive.x);
         pieceActive.ligne = pieceActive.getLigne(pieceActive.y);
 
@@ -193,8 +193,8 @@ public class PanneauDeJeu extends JPanel implements Runnable{
             if (peutBouger) {
                 g2.setColor(Color.YELLOW);
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
-                g2.fillRect(pieceActive.col * Echiquier.TAILLE_CARRE, pieceActive.ligne * Echiquier.TAILLE_CARRE,
-                        Echiquier.TAILLE_CARRE, Echiquier.TAILLE_CARRE);
+                g2.fillRect(pieceActive.col * Echiquier.TAILLE_CASE, pieceActive.ligne * Echiquier.TAILLE_CASE,
+                        Echiquier.TAILLE_CASE, Echiquier.TAILLE_CASE);
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
             }
 

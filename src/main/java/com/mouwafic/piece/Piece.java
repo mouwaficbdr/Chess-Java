@@ -1,7 +1,7 @@
 package com.mouwafic.piece;
 
 import com.mouwafic.main.Echiquier;
-
+import com.mouwafic.main.PanneauDeJeu;
 
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderException;
@@ -21,6 +21,7 @@ public class Piece {
     public int x, y;
     public int col, ligne, preCol, preLigne;
     public int couleur;
+    public Piece tombeSurPiece;
 
     public Piece(int couleur, int col, int ligne) {
         this.couleur = couleur;
@@ -75,8 +76,8 @@ public class Piece {
             };
 
             // Définir les dimensions de l'image rendue
-            transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, (float) Echiquier.TAILLE_CARRE);
-            transcoder.addTranscodingHint(ImageTranscoder.KEY_HEIGHT, (float) Echiquier.TAILLE_CARRE);
+            transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, (float) Echiquier.TAILLE_CASE);
+            transcoder.addTranscodingHint(ImageTranscoder.KEY_HEIGHT, (float) Echiquier.TAILLE_CASE);
 
             // Effectuer la conversion
             TranscoderInput input = new TranscoderInput(svgStream);
@@ -104,19 +105,19 @@ public class Piece {
     }
 
     public int getX(int col) {
-        return col * Echiquier.TAILLE_CARRE;
+        return col * Echiquier.TAILLE_CASE;
     }
 
     public int getY(int ligne) {
-        return ligne * Echiquier.TAILLE_CARRE;
+        return ligne * Echiquier.TAILLE_CASE;
     }
 
     public int getCol(int x) {
-        return (x + Echiquier.MOITIE_TAILLE_CARRE) / Echiquier.TAILLE_CARRE;
+        return (x + Echiquier.MOITIE_TAILLE_CASE) / Echiquier.TAILLE_CASE; //On rajoute la valeur de la moitié d'un carré pour prendre comme référence le centre de la case
     }
 
     public int getLigne(int y) {
-        return (y + Echiquier.MOITIE_TAILLE_CARRE) / Echiquier.TAILLE_CARRE;
+        return (y + Echiquier.MOITIE_TAILLE_CASE) / Echiquier.TAILLE_CASE;
     }
 
     public void mettreAJourPosition() {
@@ -144,6 +145,15 @@ public class Piece {
         return false;
     }
 
+    public Piece tombeSurPiece(int colCible, int ligneCible) {
+        for (Piece piece : PanneauDeJeu.simPieces) {
+            if (piece.col == colCible && piece.ligne == ligneCible && piece != this) {
+                return piece;
+            }
+        }
+        return null;
+    }
+
     public void dessiner(Graphics2D g2) {
 
         // Obtenir la largeur et la hauteur de l'image
@@ -151,8 +161,8 @@ public class Piece {
         int hauteurImage = image.getHeight();
 
         // Calculer la position centrée
-        int xCentre = x + (Echiquier.TAILLE_CARRE - largeurImage) / 2;
-        int yCentre = y + (Echiquier.TAILLE_CARRE - hauteurImage) / 2;
+        int xCentre = x + (Echiquier.TAILLE_CASE - largeurImage) / 2;
+        int yCentre = y + (Echiquier.TAILLE_CASE - hauteurImage) / 2;
 
         g2.drawImage(image, xCentre, yCentre, null);
     }
