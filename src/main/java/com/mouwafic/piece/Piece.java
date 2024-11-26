@@ -46,62 +46,63 @@ public class Piece {
     //     return image;
     // }
 
+    // ! Chargement de l'image à partir d'un fichier svg
     public BufferedImage getImage(String cheminImage) {
-    BufferedImage image = null;
+        BufferedImage image = null;
 
-    try (InputStream svgStream = getClass().getResourceAsStream(cheminImage + ".svg")) {
-        // Vérifier si le fichier SVG existe
-        if (svgStream == null) {
-            throw new IllegalArgumentException("Le fichier SVG à l'emplacement " + cheminImage + " est introuvable.");
+        try (InputStream svgStream = getClass().getResourceAsStream(cheminImage + ".svg")) {
+            // Vérifier si le fichier SVG existe
+            if (svgStream == null) {
+                throw new IllegalArgumentException(
+                        "Le fichier SVG à l'emplacement " + cheminImage + " est introuvable.");
+            }
+
+            // Créer un Transcoder pour convertir le SVG en BufferedImage
+            final BufferedImage[] tempImage = new BufferedImage[1];
+
+            Transcoder transcoder = new ImageTranscoder() {
+                @Override
+                public BufferedImage createImage(int width, int height) {
+                    // Créer et stocker l'image localement
+                    return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+                }
+
+                @Override
+                public void writeImage(BufferedImage img, TranscoderOutput out) {
+                    // Stocker l'image dans le tableau temporaire
+                    tempImage[0] = img;
+                }
+            };
+
+            // Définir les dimensions de l'image rendue
+            transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, (float) Echiquier.TAILLE_CARRE);
+            transcoder.addTranscodingHint(ImageTranscoder.KEY_HEIGHT, (float) Echiquier.TAILLE_CARRE);
+
+            // Effectuer la conversion
+            TranscoderInput input = new TranscoderInput(svgStream);
+            transcoder.transcode(input, null);
+
+            // Récupérer l'image générée
+            image = tempImage[0];
+
+        } catch (TranscoderException e) {
+            System.err.println("Erreur lors de la conversion du fichier SVG : " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.err.println("Argument invalide : " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            System.err.println("Une erreur inattendue s'est produite : " + e.getMessage());
+            e.printStackTrace();
         }
 
-        // Créer un Transcoder pour convertir le SVG en BufferedImage
-        final BufferedImage[] tempImage = new BufferedImage[1];
+        if (image == null) {
+            throw new IllegalStateException(
+                    "Impossible de convertir le fichier SVG en BufferedImage pour " + cheminImage);
+        }
 
-        Transcoder transcoder = new ImageTranscoder() {
-            @Override
-            public BufferedImage createImage(int width, int height) {
-                // Créer et stocker l'image localement
-                return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            }
-
-            @Override
-            public void writeImage(BufferedImage img, TranscoderOutput out) {
-                // Stocker l'image dans le tableau temporaire
-                tempImage[0] = img;
-            }
-        };
-
-        // Définir les dimensions de l'image rendue
-        transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, (float) Echiquier.TAILLE_CARRE);
-        transcoder.addTranscodingHint(ImageTranscoder.KEY_HEIGHT, (float) Echiquier.TAILLE_CARRE);
-
-        // Effectuer la conversion
-        TranscoderInput input = new TranscoderInput(svgStream);
-        transcoder.transcode(input, null);
-
-        // Récupérer l'image générée
-        image = tempImage[0];
-
-    } catch (TranscoderException e) {
-        System.err.println("Erreur lors de la conversion du fichier SVG : " + e.getMessage());
-    } catch (IllegalArgumentException e) {
-        System.err.println("Argument invalide : " + e.getMessage());
-        throw e;
-    } catch (Exception e) {
-        System.err.println("Une erreur inattendue s'est produite : " + e.getMessage());
-        e.printStackTrace();
+        return image;
     }
 
-    if (image == null) {
-        throw new IllegalStateException("Impossible de convertir le fichier SVG en BufferedImage pour " + cheminImage);
-    }
-
-    return image;
-}
-
-
-    
     public int getX(int col) {
         return col * Echiquier.TAILLE_CARRE;
     }
@@ -146,12 +147,12 @@ public class Piece {
     public void dessiner(Graphics2D g2) {
 
         // Obtenir la largeur et la hauteur de l'image
-        int imageWidth = image.getWidth();
-        int imageHeight = image.getHeight();
+        int largeurImage = image.getWidth();
+        int hauteurImage = image.getHeight();
 
         // Calculer la position centrée
-        int xCentre = x + (Echiquier.TAILLE_CARRE - imageWidth) / 2;
-        int yCentre = y + (Echiquier.TAILLE_CARRE - imageHeight) / 2;
+        int xCentre = x + (Echiquier.TAILLE_CARRE - largeurImage) / 2;
+        int yCentre = y + (Echiquier.TAILLE_CARRE - hauteurImage) / 2;
 
         g2.drawImage(image, xCentre, yCentre, null);
     }

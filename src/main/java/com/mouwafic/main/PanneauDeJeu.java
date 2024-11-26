@@ -16,8 +16,8 @@ public class PanneauDeJeu extends JPanel implements Runnable{
     Echiquier echiquier = new Echiquier();
     Souris souris = new Souris();
     //PIECES
-    public static ArrayList<Piece> pieces = new ArrayList<>(); //Backup en cas de reset
-    public static ArrayList<Piece> simPieces = new ArrayList<>();
+    public static ArrayList<Piece> pieces = new ArrayList<>(); //L'etat réel des pièces dans le jeu
+    public static ArrayList<Piece> simPieces = new ArrayList<>(); //Permet de simuler le déplacement sans affecter l'état réel des pièces dans le jeu
     Piece pieceActive;
 
     //COULEUR
@@ -77,13 +77,13 @@ public class PanneauDeJeu extends JPanel implements Runnable{
         peutBouger = false;
         caseValide = false;
 
-        //Si une pièce est maintenue, mettre à jour la position
-        pieceActive.x = souris.x - Echiquier.MOITIE_TAILLE_CARRE;
+        //Si une pièce est maintenue, mettre à jour sa position
+        pieceActive.x = souris.x - Echiquier.MOITIE_TAILLE_CARRE; //On soustrait la taille de la moitié d'un carré pour que la piece active soit centrée sur la position de la souris
         pieceActive.y = souris.y - Echiquier.MOITIE_TAILLE_CARRE;
         pieceActive.col = pieceActive.getCol(pieceActive.x);
         pieceActive.ligne = pieceActive.getLigne(pieceActive.y);
 
-        //Vérifie si la pièce est au dessus d'un case valide
+        //Vérifie si la pièce maintenue est au dessus d'un case valide
         if (pieceActive.peutBouger(pieceActive.col, pieceActive.ligne)) {
             peutBouger = true;
             caseValide = true;
@@ -198,7 +198,7 @@ public class PanneauDeJeu extends JPanel implements Runnable{
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
             }
 
-            //Là je dois redessiner la pièce active à la fin pour qu'il ne soit pas caché par l'échiquier ou la case colorée
+            //Là je redessinela pièce active à la fin pour qu'elle ne soit pas caché par l'échiquier ou la case colorée
             pieceActive.dessiner(g2);
 
         }
