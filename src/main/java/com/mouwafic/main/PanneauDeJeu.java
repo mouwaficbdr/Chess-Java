@@ -14,26 +14,80 @@ public class PanneauDeJeu extends JPanel implements Runnable{
     final int FPS = 60;  //Nombre d'images par seconde pour définir l'intervalle
     Thread threadDeJeu;
     Echiquier echiquier = new Echiquier();
-
+    Souris souris = new Souris();
     //PIECES
     public static ArrayList<Piece> pieces = new ArrayList<>(); //Backup en cas de reset
     public static ArrayList<Piece> simPieces = new ArrayList<>();
+    Piece pieceActive;
 
     //COULEUR
     public static final int BLANC = 0;
     public static final int NOIR = 1;
     int couleurActuelle = BLANC;
 
+    //BOOLEENS
+    boolean peutBouger;
+    boolean caseValide;
+
 
     public PanneauDeJeu() {
         setPreferredSize(new Dimension(LARGEUR, HAUTEUR));
         setBackground(Color.BLACK);
+        addMouseMotionListener(souris);
+        addMouseListener(souris);
 
         placerPieces();
         copiePieces(pieces, simPieces);
     }
 
     private void mettreAJour() {
+
+        //Lorsqu'on appuie
+        if (souris.appuie) {
+            if (pieceActive == null) {
+
+                for (Piece piece : simPieces) {
+                    if (piece.couleur == couleurActuelle && piece.col == (int) (souris.x / Echiquier.TAILLE_CARRE)
+                            && piece.ligne == (int) (souris.y / Echiquier.TAILLE_CARRE)) {
+                        pieceActive = piece;
+                    }
+                }
+            } else {
+                simuler();
+            }
+        }
+
+        //Lorsqu'on relache
+        if (souris.appuie == false) {
+            if (pieceActive != null) {
+                if (caseValide) {
+                    pieceActive.mettreAJourPosition();
+                    
+                } else {
+                    pieceActive.retour();
+                    pieceActive = null;   
+                }
+            }
+        }
+
+    }
+
+    private void simuler() {
+
+        peutBouger = false;
+        caseValide = false;
+
+        //Si une pièce est maintenue, mettre à jour la position
+        pieceActive.x = souris.x - Echiquier.MOITIE_TAILLE_CARRE;
+        pieceActive.y = souris.y - Echiquier.MOITIE_TAILLE_CARRE;
+        pieceActive.col = pieceActive.getCol(pieceActive.x);
+        pieceActive.ligne = pieceActive.getLigne(pieceActive.y);
+
+        //Vérifie si la pièce est au dessus d'un case valide
+        if (pieceActive.peutBouger(pieceActive.col, pieceActive.ligne)) {
+            peutBouger = true;
+            caseValide = true;
+        }
 
     }
 
@@ -91,7 +145,8 @@ public class PanneauDeJeu extends JPanel implements Runnable{
         pieces.add(new Cavalier(BLANC, 1, 7));
         pieces.add(new Fou(BLANC, 2, 7));
         pieces.add(new Reine(BLANC, 3, 7));
-        pieces.add(new Roi(BLANC, 4, 7));
+        // pieces.add(new Roi(BLANC, 4, 7));
+        pieces.add(new Roi(BLANC, 4, 4));
         pieces.add(new Fou(BLANC, 5, 7));
         pieces.add(new Cavalier(BLANC, 6, 7));
         pieces.add(new Tour(BLANC, 7, 7));
@@ -131,8 +186,22 @@ public class PanneauDeJeu extends JPanel implements Runnable{
 
         echiquier.dessiner(g2);
 
-        for(Piece p : simPieces) {
+        for (Piece p : simPieces) {
             p.dessiner(g2);
+        }
+        
+        if (pieceActive != null) {
+            if (peutBouger) {
+                g2.setColor(Color.YELLOW);
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+                g2.fillRect(pieceActive.col * Echiquier.TAILLE_CARRE, pieceActive.ligne * Echiquier.TAILLE_CARRE,
+                        Echiquier.TAILLE_CARRE, Echiquier.TAILLE_CARRE);
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+            }
+
+            //Là je dois redessiner la pièce active à la fin pour qu'il ne soit pas caché par l'échiquier ou la case colorée
+            pieceActive.dessiner(g2);
+
         }
     }
 
