@@ -230,6 +230,18 @@ public class PanneauDeJeu extends JPanel implements Runnable{
             pieceActive.dessiner(g2);
 
         }
+
+        //Texte pour alternance des tours
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.setFont(new Font("Book Antiqua", Font.PLAIN, 40));
+        g2.setColor(Color.white);
+
+        if (couleurActuelle == BLANC) {
+            g2.drawString("Tour des Blancs", 840, 550);
+        } else {
+            g2.drawString("Tour des Noirs", 840, 250);
+        }
+
     }
 
 }
