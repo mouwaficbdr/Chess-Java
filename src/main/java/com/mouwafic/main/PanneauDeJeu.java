@@ -67,6 +67,8 @@ public class PanneauDeJeu extends JPanel implements Runnable{
                     //On met à jour la arraylist pieces dans le cas où une pièce a été capturée
                     copiePieces(simPieces, pieces);
                     pieceActive.mettreAJourPosition();
+
+                    alternerTour();
                     
                 } else {
 
@@ -193,6 +195,15 @@ public class PanneauDeJeu extends JPanel implements Runnable{
         for (int i = 0; i < source.size(); i++) {
             cible.add(source.get(i));
         }
+    }
+
+    public void alternerTour() {
+        if (couleurActuelle == BLANC) {
+            couleurActuelle = NOIR;
+        } else {
+            couleurActuelle = BLANC;
+        }
+        pieceActive = null;
     }
 
     public void paintComponent(Graphics g) {
