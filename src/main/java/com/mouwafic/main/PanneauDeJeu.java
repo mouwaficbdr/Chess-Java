@@ -233,7 +233,7 @@ public class PanneauDeJeu extends JPanel implements Runnable{
 
         //Texte pour alternance des tours
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2.setFont(new Font("Book Antiqua", Font.PLAIN, 40));
+        g2.setFont(new Font("Serif", Font.PLAIN, 40));
         g2.setColor(Color.white);
 
         if (couleurActuelle == BLANC) {
