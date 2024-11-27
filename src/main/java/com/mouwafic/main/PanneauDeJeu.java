@@ -162,8 +162,7 @@ public class PanneauDeJeu extends JPanel implements Runnable{
         pieces.add(new Cavalier(BLANC, 1, 7));
         pieces.add(new Fou(BLANC, 2, 7));
         pieces.add(new Reine(BLANC, 3, 7));
-        // pieces.add(new Roi(BLANC, 4, 7));
-        pieces.add(new Roi(BLANC, 4, 4));
+        pieces.add(new Roi(BLANC, 4, 7));
         pieces.add(new Fou(BLANC, 5, 7));
         pieces.add(new Cavalier(BLANC, 6, 7));
         pieces.add(new Tour(BLANC, 7, 7));
