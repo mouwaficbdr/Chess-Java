@@ -22,7 +22,7 @@ public class Piece {
     public int col, ligne, preCol, preLigne;
     public int couleur;
     public Piece pieceSurDestination;
-    public boolean aEteDeplace;
+    public boolean aEteDeplace, deplaceDe2Cases;
 
     public Piece(int couleur, int col, int ligne) {
         this.couleur = couleur;

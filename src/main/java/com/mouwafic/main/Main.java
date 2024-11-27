@@ -16,5 +16,6 @@ public class Main {
         fenetre.setVisible(true);
 
         panneau.commencerJeu();
+
     }
 }

@@ -1,11 +1,13 @@
+com\mouwafic\piece\Reine.class
+com\mouwafic\piece\Piece.class
+com\mouwafic\piece\Tour.class
+com\mouwafic\main\Type.class
+com\mouwafic\main\Main.class
 com\mouwafic\main\Echiquier.class
 com\mouwafic\main\PanneauDeJeu.class
 com\mouwafic\piece\Roi.class
-com\mouwafic\piece\Reine.class
-com\mouwafic\piece\Piece.class
 com\mouwafic\piece\Fou.class
 com\mouwafic\piece\Pion.class
-com\mouwafic\piece\Tour.class
 com\mouwafic\piece\Cavalier.class
-com\mouwafic\main\Main.class
 com\mouwafic\piece\Piece$1.class
+com\mouwafic\main\Souris.class

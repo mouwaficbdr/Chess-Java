@@ -19,6 +19,7 @@ public class PanneauDeJeu extends JPanel implements Runnable{
     public static ArrayList<Piece> pieces = new ArrayList<>(); //L'etat réel des pièces dans le jeu
     public static ArrayList<Piece> simPieces = new ArrayList<>(); //Permet de simuler le déplacement sans affecter l'état réel des pièces dans le jeu
     Piece pieceActive;
+    public static Piece pieceRoque;
 
     //COULEUR
     public static final int BLANC = 0;
@@ -67,6 +68,9 @@ public class PanneauDeJeu extends JPanel implements Runnable{
                     //On met à jour la arraylist pieces dans le cas où une pièce a été capturée
                     copiePieces(simPieces, pieces);
                     pieceActive.mettreAJourPosition();
+                    if (pieceRoque != null) {
+                        pieceRoque.mettreAJourPosition();
+                    }
 
                     alternerTour();
                     
@@ -91,6 +95,13 @@ public class PanneauDeJeu extends JPanel implements Runnable{
         //On ramène toute pièce qui a été supprimée durant la simulation
         copiePieces(pieces, simPieces);
 
+        //Remettre à défaut la position de la piece qui Roque
+        if (pieceRoque != null) {
+            pieceRoque.col = pieceRoque.preCol;
+            pieceRoque.x = pieceRoque.getX(pieceRoque.col);
+            pieceRoque = null;
+        }
+
         //Si une pièce est maintenue, mettre à jour sa position
         pieceActive.x = souris.x - Echiquier.MOITIE_TAILLE_CASE; //On soustrait la taille de la moitié d'un carré pour que la piece active soit centrée sur la position de la souris
         pieceActive.y = souris.y - Echiquier.MOITIE_TAILLE_CASE;
@@ -104,6 +115,8 @@ public class PanneauDeJeu extends JPanel implements Runnable{
             if (pieceActive.pieceSurDestination != null) {
                 simPieces.remove(pieceActive.pieceSurDestination.getIndex());
             }
+
+            verifieRoque();
 
             caseValide = true;
         }
@@ -197,6 +210,18 @@ public class PanneauDeJeu extends JPanel implements Runnable{
         }
     }
 
+    private void verifieRoque() {
+        if (pieceRoque != null) {
+            if (pieceRoque.col == 0) {
+                pieceRoque.col += 3;
+            }
+            else if (pieceRoque.col == 7) {
+                pieceRoque.col -= 2;
+            }
+            pieceRoque.x = pieceRoque.getX(pieceRoque.col);
+        }
+    }
+
     public void alternerTour() {
         if (couleurActuelle == BLANC) {
             couleurActuelle = NOIR;
@@ -216,7 +241,7 @@ public class PanneauDeJeu extends JPanel implements Runnable{
         for (Piece p : simPieces) {
             p.dessiner(g2);
         }
-        
+
         if (pieceActive != null) {
             if (peutBouger) {
                 g2.setColor(Color.YELLOW);
@@ -230,18 +255,7 @@ public class PanneauDeJeu extends JPanel implements Runnable{
             pieceActive.dessiner(g2);
 
         }
-
-        //Texte pour alternance des tours
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2.setFont(new Font("Serif", Font.PLAIN, 40));
-        g2.setColor(Color.white);
-
-        if (couleurActuelle == BLANC) {
-            g2.drawString("Tour des Blancs", 840, 550);
-        } else {
-            g2.drawString("Tour des Noirs", 840, 250);
-        }
-
     }
+    
 
 }
