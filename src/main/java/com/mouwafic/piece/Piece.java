@@ -154,6 +154,13 @@ public class Piece {
         return false;
     }
 
+    public boolean memeCase(int colCible, int ligneCible) {
+        if (colCible == preCol && ligneCible == preLigne) {
+            return true;
+        }
+        return false;
+    }
+
     public Piece tombeSurPiece(int colCible, int ligneCible) {
         for (Piece piece : PanneauDeJeu.simPieces) {
             if (piece.col == colCible && piece.ligne == ligneCible && piece != this) {
@@ -178,6 +185,111 @@ public class Piece {
         }
 
         return false;
+    }
+
+    public boolean pieceSurLigneDroite(int colCible, int ligneCible) {
+
+        //Quand la piece bouge vers la gauche
+        for (int c = preCol - 1; c > colCible; c--) {
+            for (Piece piece : PanneauDeJeu.simPieces) {
+                if (piece.col == c && piece.ligne == ligneCible) {
+                    pieceSurDestination = piece;
+                    return true;
+                }
+            }
+        }
+
+        //Quand la piece bouge vers la droite
+        for (int c = preCol + 1; c < colCible; c++) {
+            for (Piece piece : PanneauDeJeu.simPieces) {
+                if (piece.col == c && piece.ligne == ligneCible) {
+                    pieceSurDestination = piece;
+                    return true;
+                }
+            }
+        }
+
+        //Quand la piece bouge vers le haut
+        for (int l = preLigne - 1; l > ligneCible; l--) {
+            for (Piece piece : PanneauDeJeu.simPieces) {
+                if (piece.ligne == l && piece.col == colCible) {
+                    pieceSurDestination = piece;
+                    return true;
+                }
+            }
+        }
+
+        //Quand la piece bouge vers le bas
+        for (int l = preLigne + 1; l < ligneCible; l++) {
+            for (Piece piece : PanneauDeJeu.simPieces) {
+                if (piece.ligne == l && piece.col == colCible) {
+                    pieceSurDestination = piece;
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    
+    public boolean pieceSurDiagonale(int colCible, int ligneCible) {
+
+        //Haut
+        if (ligneCible < preLigne) {
+            //Gauche
+            for (int c = preCol - 1; c > colCible; c--) {
+
+                int diff = Math.abs(c - preCol);
+                for (Piece piece : PanneauDeJeu.simPieces) {
+                    if (piece.col == c && piece.ligne == preLigne - diff) {
+                        pieceSurDestination = piece;
+                        return true;
+                    }
+                }
+            }
+
+            //Droite
+            for (int c = preCol + 1; c < colCible; c++) {
+
+                int diff = Math.abs(c - preCol);
+                for (Piece piece : PanneauDeJeu.simPieces) {
+                    if (piece.col == c && piece.ligne == preLigne - diff) {
+                        pieceSurDestination = piece;
+                        return true;
+                    }
+                }
+            }
+        }
+        
+        //Bas
+        if (ligneCible > preLigne) {
+            //Gauche
+            for (int c = preCol - 1; c > colCible; c--) {
+
+                int diff = Math.abs(c - preCol);
+                for (Piece piece : PanneauDeJeu.simPieces) {
+                    if (piece.col == c && piece.ligne == preLigne + diff) {
+                        pieceSurDestination = piece;
+                        return true;
+                    }
+                }
+            }
+
+            //Droite
+            for (int c = preCol + 1; c < colCible; c++) {
+
+                int diff = Math.abs(c - preCol);
+                for (Piece piece : PanneauDeJeu.simPieces) {
+                    if (piece.col == c && piece.ligne == preLigne + diff) {
+                        pieceSurDestination = piece;
+                        return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
+
     }
 
     public void dessiner(Graphics2D g2) {
