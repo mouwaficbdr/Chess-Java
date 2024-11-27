@@ -18,7 +18,7 @@ public class PanneauDeJeu extends JPanel implements Runnable{
     //PIECES
     public static ArrayList<Piece> pieces = new ArrayList<>(); //L'etat réel des pièces dans le jeu
     public static ArrayList<Piece> simPieces = new ArrayList<>();
-    ArrayList<Piece> piecesPromotion = new ArrayList<>();//Permet de simuler le déplacement sans affecter l'état réel des pièces dans le jeu
+    ArrayList<Piece> piecesPromotion = new ArrayList<>();
     Piece pieceActive, pieceMetEnEchec;
     public static Piece pieceRoque;
 
@@ -516,9 +516,9 @@ public class PanneauDeJeu extends JPanel implements Runnable{
                     || couleurActuelle == NOIR && pieceActive.ligne == 7) {
                 piecesPromotion.clear();
                 piecesPromotion.add(new Tour(couleurActuelle, 9, 2));
-                piecesPromotion.add(new Cavalier(couleurActuelle, 9, 2));
-                piecesPromotion.add(new Fou(couleurActuelle, 9, 2));
-                piecesPromotion.add(new Reine(couleurActuelle, 9, 2));
+                piecesPromotion.add(new Cavalier(couleurActuelle, 9, 3));
+                piecesPromotion.add(new Fou(couleurActuelle, 9, 4));
+                piecesPromotion.add(new Reine(couleurActuelle, 9, 5));
                 return true;
             }
 
@@ -600,11 +600,9 @@ public class PanneauDeJeu extends JPanel implements Runnable{
 
         if (promotion) {
             g2.drawString("Promouvoir à: ", 840, 150);
-            int decalage = 0; // Décalage pour chaque pièce de promotion
             for (Piece piece : piecesPromotion) {
-                g2.drawImage(piece.image, piece.getX(piece.col), piece.getY(piece.ligne) + decalage, Echiquier.TAILLE_CASE,
+                g2.drawImage(piece.image, piece.getX(piece.col), piece.getY(piece.ligne), Echiquier.TAILLE_CASE,
                         Echiquier.TAILLE_CASE, null);
-                decalage += Echiquier.TAILLE_CASE; // Augmente le décalage pour la prochaine pièce
             }
         } else {
             if (couleurActuelle == BLANC) {
