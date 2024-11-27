@@ -2,6 +2,7 @@ package com.mouwafic.piece;
 
 import com.mouwafic.main.Echiquier;
 import com.mouwafic.main.PanneauDeJeu;
+import com.mouwafic.main.Type;
 
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderException;
@@ -17,6 +18,8 @@ import java.io.InputStream;
 
 
 public class Piece {
+
+    public Type type;
     public BufferedImage image;
     public int x, y;
     public int col, ligne, preCol, preLigne;
@@ -131,6 +134,14 @@ public class Piece {
     }
 
     public void mettreAJourPosition() {
+
+        //Pour vérifier le en Passant
+        if (type == Type.PION) {
+            if (Math.abs(ligne - preLigne) == 2) {
+                deplaceDe2Cases = true;
+            }
+        }
+
         x = getX(col);
         y = getY(ligne);
         preCol = getCol(x);
@@ -138,7 +149,7 @@ public class Piece {
         aEteDeplace = true;
     }
 
-    public void retour() {
+    public void retourPosition() {
         col = preCol;
         ligne = preLigne;
         x = getX(col);

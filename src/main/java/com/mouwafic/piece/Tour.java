@@ -1,10 +1,14 @@
 package com.mouwafic.piece;
 
 import com.mouwafic.main.PanneauDeJeu;
+import com.mouwafic.main.Type;
 
 public class Tour extends Piece {
     public Tour(int couleur, int col, int ligne) {
         super(couleur, col, ligne);
+
+                type = Type.TOUR;
+
 
         if (couleur == PanneauDeJeu.BLANC) {
             image = getImage("/images/w_rook");

@@ -1,10 +1,13 @@
 package com.mouwafic.piece;
 
 import com.mouwafic.main.PanneauDeJeu;
+import com.mouwafic.main.Type;
 
 public class Pion extends Piece{
     public Pion(int couleur, int col, int ligne) {
         super(couleur, col, ligne);
+
+        type = Type.PION;
 
         if (couleur == PanneauDeJeu.BLANC) {
             image = getImage("/images/w_pawn");
@@ -44,6 +47,16 @@ public class Pion extends Piece{
                     && pieceSurDestination != null && pieceSurDestination.couleur != couleur) {
                 return true;
             }
+
+            //En Passant
+            if (Math.abs(colCible - preCol) == 1 && ligneCible == preLigne + valeurDeplacement) {
+                for (Piece piece : PanneauDeJeu.simPieces) {
+                    if (piece.col == colCible && piece.ligne == preLigne && piece.deplaceDe2Cases == true) {
+                            pieceSurDestination = piece;
+                            return true;
+                            }
+                        }
+                    }
 
         }
         

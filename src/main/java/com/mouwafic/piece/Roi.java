@@ -1,10 +1,14 @@
 package com.mouwafic.piece;
 
 import com.mouwafic.main.PanneauDeJeu;
+import com.mouwafic.main.Type;
 
 public class Roi extends Piece{
     public Roi(int couleur, int col, int ligne) {
         super(couleur, col, ligne);
+
+                type = Type.ROI;
+
 
         if (couleur == PanneauDeJeu.BLANC) {
             image = getImage("/images/w_king");
