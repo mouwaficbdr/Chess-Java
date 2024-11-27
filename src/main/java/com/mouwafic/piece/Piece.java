@@ -22,6 +22,7 @@ public class Piece {
     public int col, ligne, preCol, preLigne;
     public int couleur;
     public Piece pieceSurDestination;
+    public boolean aEteDeplace;
 
     public Piece(int couleur, int col, int ligne) {
         this.couleur = couleur;
@@ -134,6 +135,7 @@ public class Piece {
         y = getY(ligne);
         preCol = getCol(x);
         preLigne = getLigne(y);
+        aEteDeplace = true;
     }
 
     public void retour() {
