@@ -1,4 +1,4 @@
-# README du Projet Échecs
+# README
 
 ## Description
 
@@ -23,7 +23,7 @@ Ce projet est un jeu d'échecs développé en Java, utilisant la bibliothèque S
 
 1. Clonez le dépôt :
    ```bash
-   git clone https://github.com/votre-utilisateur/echecs.git
+   git clone https://github.com/mouwafibdr/echecs.git
    ```
 
 2. Accédez au répertoire du projet :
